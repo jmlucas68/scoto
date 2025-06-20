@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juan Duns Escoto - El Doctor Sutil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23f4f4f4"/><stop offset="100%" stop-color="%23e8e8e8"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23a)"/></svg>');
+            background-size: cover;
+            color: white;
+            position: relative;
+        }
+
+            .hero::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+                opacity: 0.9;
+                animation: gradientShift 10s ease infinite;
+            }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            }
+
+            33% {
+                background: linear-gradient(45deg, #764ba2, #f093fb, #667eea);
+            }
+
+            66% {
+                background: linear-gradient(45deg, #f093fb, #667eea, #764ba2);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .hero .dates {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section {
+            background: white;
+            margin: 2rem 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.6s ease;
+        }
+
+            .section.visible {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+        .section-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+            .section-header h2 {
+                font-size: 2.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+        .section-content {
+            padding: 2rem;
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            border-left: 5px solid #667eea;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            font-style: italic;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .quote-box::before {
+                content: '"';
+                font-size: 4rem;
+                color: #667eea;
+                position: absolute;
+                top: -10px;
+                left: 10px;
+                opacity: 0.3;
+            }
+
+        .quote-author {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 1rem;
+            color: #667eea;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+            .timeline::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 0;
+                bottom: 0;
+                width: 3px;
+                background: linear-gradient(to bottom, #667eea, #764ba2);
+                transform: translateX(-50%);
+            }
+
+        .timeline-item {
+            position: relative;
+            margin: 2rem 0;
+            width: 45%;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+            .timeline-item:nth-child(odd) {
+                left: 0;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 55%;
+            }
+
+            .timeline-item::before {
+                content: '';
+                position: absolute;
+                width: 15px;
+                height: 15px;
+                background: #667eea;
+                border-radius: 50%;
+                top: 1.5rem;
+            }
+
+            .timeline-item:nth-child(odd)::before {
+                right: -32px;
+            }
+
+            .timeline-item:nth-child(even)::before {
+                left: -32px;
+            }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .work-card {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+            .work-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            }
+
+            .work-card h3 {
+                color: #667eea;
+                margin-bottom: 1rem;
+            }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .link-card {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+            .link-card:hover {
+                border-color: #667eea;
+                transform: scale(1.05);
+            }
+
+            .link-card a {
+                text-decoration: none;
+                color: #667eea;
+                font-weight: bold;
+            }
+
+        .influence-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .influence-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+            .influence-box h3 {
+                margin-bottom: 1rem;
+                font-size: 1.5rem;
+            }
+
+        .nav-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            padding: 1rem;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+            .nav-menu a {
+                display: block;
+                text-decoration: none;
+                color: #667eea;
+                margin: 0.5rem 0;
+                font-weight: bold;
+                transition: color 0.3s ease;
+            }
+
+                .nav-menu a:hover {
+                    color: #764ba2;
+                }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                width: calc(100% - 60px);
+                left: 40px !important;
+            }
+
+                .timeline-item::before {
+                    left: -32px !important;
+                }
+
+            .influence-section {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements"></div>
+
+    <nav class="nav-menu">
+        <a href="#biografia">Biografía</a>
+        <a href="#pensamiento">Pensamiento</a>
+        <a href="#obras">Obras</a>
+        <a href="#influencias">Influencias</a>
+        <a href="#contexto">Contexto</a>
+        <a href="#fuentes">Fuentes</a>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Juan Duns Escoto</h1>
+            <p class="subtitle">Doctor Subtilis</p>
+            <p class="dates">c. 1266 - 1308</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section id="biografia" class="section">
+            <div class="section-header">
+                <h2>Biografía</h2>
+                <p>La vida del Doctor Sutil</p>
+            </div>
+            <div class="section-content">
+                <p>Juan Duns Escoto (c. 1266-1308) fue un teólogo y filósofo franciscano escocés, conocido como el "Doctor Sutil" por la fineza de sus distinciones filosóficas. Nacido probablemente en Duns, Escocia, se convirtió en una de las figuras más influyentes de la filosofía medieval tardía.</p>
+
+                <div class="quote-box">
+                    <p>"Dios no quiere algo porque es bueno, sino que algo es bueno porque Dios lo quiere."</p>
+                    <div class="quote-author">- Juan Duns Escoto</div>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h3>c. 1266</h3>
+                        <p>Nace en Duns, Escocia, en una familia de campesinos</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>1291</h3>
+                        <p>Es ordenado sacerdote en la Orden Franciscana</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>1300-1302</h3>
+                        <p>Enseña en Oxford y desarrolla su sistema filosófico</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>1302-1307</h3>
+                        <p>Período en París, donde alcanza gran renombre</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>1307-1308</h3>
+                        <p>Enseña en Colonia, donde muere prematuramente</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3>8 Nov 1308</h3>
+                        <p>Muerte en Colonia a los 42 años</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pensamiento" class="section">
+            <div class="section-header">
+                <h2>Pensamiento Filosófico</h2>
+                <p>Las ideas revolucionarias del Doctor Sutil</p>
+            </div>
+            <div class="section-content">
+                <h3>Voluntarismo Teológico</h3>
+                <p>Escoto defendió que la voluntad de Dios es anterior a su intelecto, estableciendo que lo bueno es bueno porque Dios así lo quiere, no porque sea intrínsecamente bueno.</p>
+
+                <div class="quote-box">
+                    <p>"La voluntad divina es la causa primera de todo lo que es bueno en la voluntad creada."</p>
+                    <div class="quote-author">- Ordinatio III, d. 37</div>
+                </div>
+
+                <h3>Univocidad del Ser</h3>
+                <p>Propuso que el concepto de "ser" se aplica de manera unívoca tanto a Dios como a las criaturas, contra la doctrina tomista de la analogía del ser.</p>
+
+                <div class="quote-box">
+                    <p>"El ser se dice unívocamente de todo aquello de lo que se predica."</p>
+                    <div class="quote-author">- Ordinatio I, d. 3</div>
+                </div>
+
+                <h3>Haecceitas (Ecceidad)</h3>
+                <p>Desarrolló el concepto de "haecceitas" o "ecceidad" para explicar el principio de individuación - aquello que hace que algo sea precisamente "esto" y no otra cosa.</p>
+
+                <div class="quote-box">
+                    <p>"Cada cosa singular tiene su propia haecceitas, que la distingue de todas las demás."</p>
+                    <div class="quote-author">- Ordinatio II, d. 3</div>
+                </div>
+
+                <h3>Inmaculada Concepción</h3>
+                <p>Fue el gran defensor teológico de la Inmaculada Concepción de María, doctrina que la Iglesia Católica definió como dogma siglos después.</p>
+
+                <div class="quote-box">
+                    <p>"Potuit, decuit, ergo fecit" (Pudo hacerlo, convenía hacerlo, por tanto lo hizo)</p>
+                    <div class="quote-author">- Argumento escotista sobre la Inmaculada Concepción</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="obras" class="section">
+            <div class="section-header">
+                <h2>Principales Obras</h2>
+                <p>El legado escrito del Doctor Sutil</p>
+            </div>
+            <div class="section-content">
+                <div class="works-grid">
+                    <div class="work-card">
+                        <h3>Ordinatio</h3>
+                        <p>Su obra magna, comentario a las Sentencias de Pedro Lombardo. Contiene su filosofía más madura.</p>
+                        <div class="link-card">
+                            <a href="https://www.amazon.es/s?k=duns+escoto+ordinatio" target="_blank">Ver en Amazon</a>
+                        </div>
+                    </div>
+
+                    <div class="work-card">
+                        <h3>Lectura</h3>
+                        <p>Versión temprana de sus comentarios a las Sentencias, desarrollada durante su enseñanza en Oxford.</p>
+                        <div class="link-card">
+                            <a href="https://www.amazon.es/s?k=duns+escoto+lectura" target="_blank">Ver en Amazon</a>
+                        </div>
+                    </div>
+
+                    <div class="work-card">
+                        <h3>Reportata Parisiensia</h3>
+                        <p>Reportaciones de sus lecciones en París, compiladas por sus estudiantes.</p>
+                        <div class="link-card">
+                            <a href="https://archive.org/search.php?query=duns%20scotus%20reportata" target="_blank">Ver en Archive.org</a>
+                        </div>
+                    </div>
+
+                    <div class="work-card">
+                        <h3>Quaestiones Quodlibetales</h3>
+                        <p>Cuestiones disputadas que abordan diversos temas teológicos y filosóficos.</p>
+                        <div class="link-card">
+                            <a href="https://www.amazon.es/s?k=duns+escoto+quaestiones" target="_blank">Ver en Amazon</a>
+                        </div>
+                    </div>
+
+                    <div class="work-card">
+                        <h3>Tractatus de Primo Principio</h3>
+                        <p>Tratado sobre el primer principio, una de sus obras más sistemáticas sobre la demostración de la existencia de Dios.</p>
+                        <div class="link-card">
+                            <a href="https://www.amazon.es/s?k=duns+escoto+primer+principio" target="_blank">Ver en Amazon</a>
+                        </div>
+                    </div>
+
+                    <div class="work-card">
+                        <h3>Collationes</h3>
+                        <p>Conferencias y discusiones académicas sobre diversos temas teológicos.</p>
+                        <div class="link-card">
+                            <a href="https://archive.org/search.php?query=scotus%20collationes" target="_blank">Ver en Archive.org</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="influencias" class="section">
+            <div class="section-header">
+                <h2>Influencias</h2>
+                <p>Raíces y proyección del pensamiento escotista</p>
+            </div>
+            <div class="section-content">
+                <div class="influence-section">
+                    <div class="influence-box">
+                        <h3>Influencias Recibidas</h3>
+                        <ul>
+                            <li><strong>San Agustín</strong> - Primacía de la voluntad</li>
+                            <li><strong>San Anselmo</strong> - Argumento ontológico</li>
+                            <li><strong>Aristóteles</strong> - Lógica y metafísica</li>
+                            <li><strong>Avicena</strong> - Univocidad del ser</li>
+                            <li><strong>San Buenaventura</strong> - Tradición franciscana</li>
+                            <li><strong>Enrique de Gante</strong> - Iluminación divina</li>
+                        </ul>
+                    </div>
+
+                    <div class="influence-box">
+                        <h3>Influencias Ejercidas</h3>
+                        <ul>
+                            <li><strong>Guillermo de Ockham</strong> - Nominalismo</li>
+                            <li><strong>Escuela Franciscana</strong> - Doctrina oficial</li>
+                            <li><strong>Suárez</strong> - Segunda Escolástica</li>
+                            <li><strong>Filosofía Moderna</strong> - Conceptos de individualidad</li>
+                            <li><strong>Heidegger</strong> - Ontología fundamental</li>
+                            <li><strong>Deleuze</strong> - Filosofía de la diferencia</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="quote-box">
+                    <p>"Escoto fue el más grande de los metafísicos medievales, y posiblemente el más grande metafísico que jamás haya existido."</p>
+                    <div class="quote-author">- Martin Heidegger</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contexto" class="section">
+            <div class="section-header">
+                <h2>Contexto Histórico y Filosófico</h2>
+                <p>La época del Doctor Sutil</p>
+            </div>
+            <div class="section-content">
+                <h3>Contexto Histórico (s. XIII-XIV)</h3>
+                <p>Escoto vivió en una época de grandes transformaciones. El siglo XIII había visto el apogeo de la Escolástica con Tomás de Aquino, pero el XIV marcó el inicio de nuevas corrientes que cuestionarían la síntesis tomista.</p>
+
+                <h3>Conflicto entre Franciscanos y Dominicos</h3>
+                <p>La rivalidad entre las órdenes franciscana y dominica influyó profundamente en el desarrollo de la filosofía medieval. Mientras los dominicos seguían a Tomás de Aquino, los franciscanos desarrollaron una tradición alternativa centrada en Escoto.</p>
+
+                <div class="quote-box">
+                    <p>"Entre los franciscanos, Duns Escoto brilló como el sol entre las estrellas."</p>
+                    <div class="quote-author">- Crónica franciscana del s. XIV</div>
+                </div>
+
+                <h3>Crisis de la Síntesis Medieval</h3>
+                <p>El trabajo de Escoto representó una crítica sistemática a la síntesis aristotélico-tomista, preparando el camino para el nominalismo de Ockham y la filosofía moderna.</p>
+
+                <h3>Ambiente Universitario</h3>
+                <p>Las universidades de Oxford y París eran centros de intensa actividad intelectual. Escoto participó en las disputas académicas que caracterizaron la vida universitaria medieval.</p>
+            </div>
+        </section>
+
+        <section id="fuentes" class="section">
+            <div class="section-header">
+                <h2>Fuentes y Referencias</h2>
+                <p>Recursos para profundizar en el estudio de Duns Escoto</p>
+            </div>
+            <div class="section-content">
+                <h3>Fuentes Académicas</h3>
+                <div class="links-grid">
+                    <div class="link-card">
+                        <a href="https://www.academia.edu/search?q=duns%20scotus" target="_blank">Academia.edu - Duns Escoto</a>
+                        <p>Artículos académicos especializados</p>
+                    </div>
+
+                    <div class="link-card">
+                        <a href="https://es.wikipedia.org/wiki/Juan_Duns_Escoto" target="_blank">Wikipedia - Juan Duns Escoto</a>
+                        <p>Información general y bibliografía</p>
+                    </div>
+
+                    <div class="link-card">
+                        <a href="https://plato.stanford.edu/entries/duns-scotus/" target="_blank">Stanford Encyclopedia</a>
+                        <p>Entrada especializada (en inglés)</p>
+                    </div>
+
+                    <div class="link-card">
+                        <a href="https://www.franciscanos.org/enciclopedia/dunsescoto.html" target="_blank">Enciclopedia Franciscana</a>
+                        <p>Perspectiva franciscana sobre Escoto</p>
+                    </div>
+                </div>
+
+                <h3>Ediciones Críticas y Estudios</h3>
+                <div class="links-grid">
+                    <div class="link-card">
+                        <a href="https://www.amazon.es/s?k=duns+escoto+obras+completas" target="_blank">Obras Completas (Amazon)</a>
+                        <p>Ediciones en español disponibles</p>
+                    </div>
+
+                    <div class="link-card">
+                        <a href="https://www.vatican.va/content/benedict-xvi/es/audiences/2010/documents/hf_ben-xvi_aud_20100707.html" target="_blank">Audiencia Papal sobre Escoto</a>
+                        <p>Benedicto XVI sobre Duns Escoto</p>
+                    </div>
+
+                    <div class="link-card">
+                        <a href="https://archive.org/search.php?query=scotus%20philosophical" target="_blank">Archive.org - Textos</a>
+                        <p>Textos históricos digitalizados</p>
+                    </div>
+
+                    <div class="link-card">
+                        <a href="https://www.jstor.org/action/doBasicSearch?Query=duns+scotus" target="_blank">JSTOR - Artículos</a>
+                        <p>Base de datos académica</p>
+                    </div>
+                </div>
+
+                <h3>Sociedades y Centros de Estudio</h3>
+                <div class="links-grid">
+                    <div class="link-card">
+                        <a href="https://www.franciscanstudies.org/" target="_blank">Franciscan Studies</a>
+                        <p>Revista especializada</p>
+                    </div>
+
+                    <div class="link-card">
+                        <a href="https://www.scotistic.org/" target="_blank">Sociedad Escotista</a>
+                        <p>Investigación especializada</p>
+                    </div>
+                </div>
+
+                <p><strong>Bibliografía básica consultada:</strong></p>
+                <ul>
+                    <li>Gilson, Étienne. <em>La filosofía en la Edad Media</em>. Madrid: Gredos, 2007.</li>
+                    <li>McGrath, Alister E. <em>Teología cristiana: Una introducción</em>. Barcelona: Paidós, 2006.</li>
+                    <li>Copleston, Frederick. <em>Historia de la Filosofía, Vol. 3</em>. Barcelona: Ariel, 2004.</li>
+                    <li>Marítain, Jacques. <em>Introducción a la filosofía</em>. Madrid: Encuentro, 2001.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Animaciones y efectos interactivos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Crear elementos flotantes
+            createFloatingElements();
+
+            // Animación de aparición de secciones
+            const sections = document.querySelectorAll('.section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Navegación suave
+            document.querySelectorAll('.nav-menu a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Efecto hover en las tarjetas de obras
+            document.querySelectorAll('.work-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px) scale(1.02)';
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Efecto de paralaje sutil en el hero
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const hero = document.querySelector('.hero');
+                if (hero) {
+                    hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+                }
+            });
+        });
+
+        function createFloatingElements() {
+            const container = document.querySelector('.floating-elements');
+            for (let i = 0; i < 20; i++) {
+                const element = document.createElement('div');
+                element.className = 'floating-element';
+                element.style.left = Math.random() * 100 + '%';
+                element.style.top = Math.random() * 100 + '%';
+                element.style.width = Math.random() * 60 + 20 + 'px';
+                element.style.height = element.style.width;
+                element.style.animationDelay = Math.random() * 6 + 's';
+                element.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                container.appendChild(element);
+            }
+        }
+
+        // Efecto de escritura para las citas
+        function typeWriter(element, text, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Contador animado para las fechas
+        function animateCounter(element, start, end, duration) {
+            let startTime = null;
+            function animate(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const progress = Math.min(timeElapsed / duration, 1);
+                const currentValue = Math.floor(progress * (end - start) + start);
+                element.textContent = currentValue;
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        // Efecto de ondas en el fondo
+        function createWaveEffect() {
+            const hero = document.querySelector('.hero');
+            let waves = [];
+
+            hero.addEventListener('click', function(e) {
+                const wave = document.createElement('div');
+                wave.style.position = 'absolute';
+                wave.style.borderRadius = '50%';
+                wave.style.background = 'rgba(255, 255, 255, 0.3)';
+                wave.style.transform = 'scale(0)';
+                wave.style.animation = 'wave 1s ease-out forwards';
+                wave.style.left = e.offsetX + 'px';
+                wave.style.top = e.offsetY + 'px';
+                wave.style.width = '20px';
+                wave.style.height = '20px';
+                wave.style.pointerEvents = 'none';
+
+                hero.appendChild(wave);
+
+                setTimeout(() => {
+                    wave.remove();
+                }, 1000);
+            });
+        }
+
+        // Agregar estilo para el efecto de ondas
+        const waveStyle = document.createElement('style');
+        waveStyle.textContent = `
+            @keyframes wave {
+                0% {
+                    transform: scale(0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(20);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(waveStyle);
+
+        // Inicializar efectos adicionales
+        setTimeout(() => {
+            createWaveEffect();
+        }, 1000);
+    </script>
+</body>
+</html>
